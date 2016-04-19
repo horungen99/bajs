@@ -1,0 +1,139 @@
+<html>
+<head>
+<meta charset="utf-8">
+<title>Flappy in Bird</title>
+<script>
+function spin() {
+	fieldrspeed = 4+(Math.random()*15);
+	ballrspeed = fieldrspeed+(Math.random()*2);
+	timer = setInterval(ticker, 1000/60);
+}
+function get(id) {
+	return parseInt(document.getElementById(id).value);
+}
+function getCash() {
+	return parseInt(document.getElementById("cash").innerHTML);
+}
+function getBetsize() {
+	return parseInt(document.getElementById("betsize").value);
+}
+function setCash(cash) {
+	document.getElementById("cash").innerHTML = cash;
+}
+function log(txt) {
+	document.getElementById("log").innerHTML = txt;
+}
+function getBet() {
+	var ret;
+	for(var q = 0; q < document.getElementsByName("bet").length; q++) {
+		if(document.getElementsByName("bet")[q].checked) {
+			ret = q;
+		}
+	}
+	return ret;
+}
+function r2d(rad) {
+	return rad*180/Math.PI;
+}
+function d2r(deg) {
+	return deg*Math.PI/180;
+}
+function r2coord(d, r) {
+	return {
+		x: Math.sin(d2r(-r))*d,
+		y: Math.cos(d2r(-r))*d
+	};
+}
+function getCanvas() {
+	var canvas = document.getElementById("c");
+	var ctx = canvas.getContext("2d");
+	return ctx;
+}
+function drawCircle(x, y, radie, borderSize, color) {
+	c.beginPath();
+	c.arc(x, y, radie, 0, 2*Math.PI);
+	c.stroke();
+}
+function drawFilledCircle(x, y, radie, color, start, stop) {
+	c.beginPath();
+	c.arc(x, y, radie, start, stop);
+	c.lineTo(x, y);
+	c.fillStyle = color;
+	c.fill();
+	c.stroke();
+}
+function clear() {
+	c.clearRect(0, 0, 500, 500);
+}
+function fly() {
+ movey += -8;
+}
+function draw() {
+	clear();
+	drawFilledCircle(30, playery, 20, "#aaa", 0, Math.PI*2);
+	playery += movey;
+	movey += 0.2;
+}
+function ticker() {
+	draw();
+	
+	}
+	fieldrspeed -= 0.05;
+	ballrspeed -= 0.04;
+	if(ballrspeed < 0){
+		ballrspeed = 0;
+	}
+	if(fieldrspeed < 0) {
+		fieldrspeed = 0;
+	}
+	fieldr += fieldrspeed;
+	ballr += ballrspeed;
+	var tballr = ballr+90;
+	while(fieldr > 360) {
+		fieldr -= 360;
+	}
+	while(tballr > 360) {
+		tballr -= 360;
+	}
+	if(fieldr < tballr) {
+		fieldr += 360;
+	}	
+var playery = 250;
+var movey = 0;
+var number = null;
+var fieldrspeed = null;
+var ballrspeed = null;
+var fieldr = 0;
+var c = null;
+var timer = null;
+var ballr = 270;
+
+function loaded() {
+	c = getCanvas();
+	draw();
+	timer = setInterval(ticker, 1000/60);
+}
+</script>
+</head>
+<body onload="loaded();">
+<div style="text-align: center;">
+<canvas id="c" width="1100" height="500" style="border: 1px solid #000;" ></canvas></br>
+<input type="button" id="spin" value="FLY" onclick="fly();" style="font-size:300%;padding:20px;margin:20px;width:200px">
+<p id="log"></p>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
